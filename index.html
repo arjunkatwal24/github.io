@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Android Developer Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #00e676;
+            --primary-hover: #00c853;
+            --secondary-color: #ff6b35;
+            --dark-bg: #0a0a0a;
+            --surface-color: #1a1a1a;
+            --card-color: #242424;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-muted: #808080;
+            --border-color: #333333;
+            --gradient: linear-gradient(135deg, var(--primary-color), #00bcd4);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            overflow-x: hidden;
+        }
+
+        /* Plexus Network Canvas */
+        #plexus-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        /* Enhanced Sidebar */
+        .sidebar {
+            background: linear-gradient(180deg, var(--surface-color) 0%, #1f1f1f 100%);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            z-index: 2;
+            border-right: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+        
+        .profile-section {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .sidebar img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            background: var(--gradient);
+            background-clip: padding-box; /* Fix for gradient border */
+            padding: 4px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar img:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow);
+        }
+        
+        .sidebar h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sidebar h2 {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .typing-effect {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            min-height: 20px;
+        }
+        
+        .sidebar nav ul {
+            list-style: none;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .sidebar nav ul li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar nav ul li a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar nav ul li a i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        .sidebar nav ul li a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .sidebar nav ul li a:hover::before,
+        .sidebar nav ul li a.active::before {
+            left: 0;
+        }
+
+        .sidebar nav ul li a:hover,
+        .sidebar nav ul li a.active {
+            color: var(--text-primary);
+            transform: translateX(5px);
+        }
+        
+        .sidebar .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: auto;
+        }
+        
+        .sidebar .social-links a {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--card-color);
+            color: var(--text-secondary);
+            border-radius: 50%;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+        
+        .sidebar .social-links a:hover {
+            background: var(--gradient);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Enhanced Main Content */
+        .main-content {
+            z-index: 1;
+            background: rgba(26, 26, 26, 0); /* Make transparent to see bg */
+        }
+
+        section {
+            padding: 100px 60px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            background: var(--surface-color); /* Opaque section background */
+            border-bottom: 1px solid var(--border-color);
+            opacity: 0; /* Start hidden for animation */
+        }
+        
+        section:first-of-type {
+            border-top: 1px solid var(--border-color);
+        }
+        
+        section.visible {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        h3.section-title {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        h3.section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+        
+        p.lead {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        /* Enhanced About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .skill-item {
+            background: var(--card-color);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow);
+        }
+
+        .skill-item i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .skill-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .skill-item p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Enhanced Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .project-card {
+            background: var(--card-color);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+        
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: left;
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .project-card .card-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .project-card:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .project-card .card-content {
+            padding: 30px;
+        }
+        
+        .project-card h4 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        
+        .project-card p {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .tech-tag {
+            background: var(--surface-color);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gradient);
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .button.secondary {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .button.secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Enhanced Contact Section */
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-top: 40px;
+        }
+
+        .contact-info h4 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--card-color);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            border-color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .contact-item i {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            width: 20px;
+        }
+        
+        .contact-form {
+            background: var(--card-color);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .contact-form h4 {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .contact-form input, 
+        .contact-form textarea {
+            width: 100%;
+            padding: 15px 20px;
+            background: var(--surface-color);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-form input:focus, 
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 230, 118, 0.1);
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            body {
+                grid-template-columns: 280px 1fr;
+            }
+            
+            section {
+                padding: 80px 40px;
+            }
+            
+            .about-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+                height: auto;
+                padding: 30px 20px;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            
+            .sidebar nav ul {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+            
+            .sidebar nav ul li a {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+            
+            .sidebar .social-links {
+                justify-content: center;
+                margin-top: 20px;
+            }
+            
+            section {
+                padding: 60px 20px;
+                min-height: auto;
+            }
+            
+            h3.section-title {
+                font-size: 2.5rem;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="plexus-canvas"></canvas>
+
+    <aside class="sidebar">
+        <div class="profile-section">
+            <img src="https://placehold.co/150x150/1a1a1a/00e676?text=You" alt="Your Profile Picture">
+            <h1>Arjun Katwal</h1>
+            <h2>Android Developer</h2>
+            <div class="typing-effect" id="typing-text"></div>
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="#about" class="active"><i class="fas fa-user"></i> About Me</a></li>
+                <li><a href="#projects"><i class="fas fa-mobile-alt"></i> Projects</a></li>
+                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+        </nav>
+        
+        <div class="social-links">
+            <a href="mailto:athakuri700@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+            <a href="https://www.linkedin.com/in/arjunkatwal24/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/arjunkatwal24" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://play.google.com/store/apps/developer?id=ay44rt" target="_blank" title="Play Store"><i class="fab fa-google-play"></i></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <section id="about">
+            <h3 class="section-title">About Me</h3>
+            <p class="lead">
+                I'm a passionate Android Developer with expertise in building intuitive, high-performance mobile applications that users love. My focus is on creating clean, scalable architectures and delivering exceptional user experiences.
+            </p>
+            
+            <div class="about-content">
+                <div class="experience-text">
+                    <p>With over [X] years of experience in Android development, I specialize in creating apps that not only look great but perform exceptionally well. I'm constantly learning new technologies and best practices to stay at the forefront of mobile development.</p>
+                    <p>My development philosophy centers around writing clean, maintainable code, implementing robust testing strategies, and creating user interfaces that are both beautiful and functional.</p>
+                </div>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <i class="fab fa-android"></i>
+                        <h4>Native Android</h4>
+                        <p>Kotlin, Java, Android SDK</p>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-layer-group"></i>
+                        <h4>Architecture</h4>
+                        <p>MVVM, Clean Architecture</p>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-database"></i>
+                        <h4>Data Management</h4>
+                        <p>Room, SQLite, Firebase</p>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-paint-brush"></i>
+                        <h4>UI/UX Design</h4>
+                        <p>Material Design, Jetpack Compose</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h3 class="section-title">My Projects</h3>
+            <p class="lead">Here are some of the apps I've built and published on the Google Play Store. Each project showcases different aspects of Android development and problem-solving.</p>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <img class="card-image" src="https://placehold.co/600x400/1e1e1e/4fc3f7?text=Rain+Nepal" alt="Rain Nepal App">
+                    <div class="card-content">
+                        <h4>Rain Nepal</h4>
+                        <p>A community-focused weather safety app for Nepal, providing real-time weather, air quality tracking, and community-driven emergency reporting for events like landslides and floods.</p>
+                        
+                        <div class="tech-stack">
+                            <span class="tech-tag">Kotlin</span>
+                            <span class="tech-tag">Weather API</span>
+                            <span class="tech-tag">Google Maps</span>
+                            <span class="tech-tag">Community Reporting</span>
+                        </div>
+                        
+                        <div class="project-links">
+                            <a href="https://play.google.com/store/apps/details?id=com.ay44rt.rainnepal" target="_blank" class="button"><i class="fab fa-google-play"></i> Play Store</a>
+                            <a href="#" class="button secondary"><i class="fab fa-github"></i> Source</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <img class="card-image" src="https://placehold.co/600x400/1e1e1e/ff6b35?text=Dashain+Countdown" alt="Dashain Countdown App">
+                    <div class="card-content">
+                        <h4>Dashain Countdown</h4>
+                        <p>A festive and fun application to count down the days to Dashain, one of the biggest festivals in Nepal. Includes event reminders and cultural information.</p>
+                        
+                        <div class="tech-stack">
+                            <span class="tech-tag">Kotlin</span>
+                            <span class="tech-tag">Background Service</span>
+                            <span class="tech-tag">Notifications</span>
+                            <span class="tech-tag">Material Design</span>
+                        </div>
+                        
+                        <div class="project-links">
+                            <a href="https://play.google.com/store/apps/details?id=com.ay44rt.dashaincountdown" target="_blank" class="button"><i class="fab fa-google-play"></i> Play Store</a>
+                            <a href="#" class="button secondary"><i class="fab fa-github"></i> Source</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <img class="card-image" src="https://placehold.co/600x400/1e1e1e/9c27b0?text=Hamro+Date+Converter" alt="Hamro Date Converter App">
+                    <div class="card-content">
+                        <h4>Nepali Date Converter</h4>
+                        <p>A fast, lightweight, and accurate utility to convert dates between the Nepali (Bikram Sambat) and Gregorian (AD) calendars. Designed to be simple and work entirely offline.</p>
+                        
+                        <div class="tech-stack">
+                            <span class="tech-tag">Java</span>
+                            <span class="tech-tag">Offline First</span>
+                            <span class="tech-tag">Date Algorithms</span>
+                            <span class="tech-tag">Lightweight</span>
+                        </div>
+                        
+                        <div class="project-links">
+                            <a href="https://play.google.com/store/apps/details?id=com.ay44rt.hamrodateconverter" target="_blank" class="button"><i class="fab fa-google-play"></i> Play Store</a>
+                            <a href="#" class="button secondary"><i class="fab fa-github"></i> Source</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h3 class="section-title">Get In Touch</h3>
+            <p class="lead">Ready to bring your app idea to life? Let's discuss your project and create something amazing together.</p>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h4>Let's Connect</h4>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <strong>Email</strong><br>
+                            <span>athakuri700@gmail.com</span>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fab fa-linkedin"></i>
+                        <div>
+                            <strong>LinkedIn</strong><br>
+                            <span>linkedin.com/in/arjunkatwal24/</span>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fab fa-github"></i>
+                        <div>
+                            <strong>GitHub</strong><br>
+                            <span>github.com/arjunkatwal24</span>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Location</strong><br>
+                            <span>Your City, Country</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <form class="contact-form" action="#" method="POST">
+                    <h4>Send a Message</h4>
+                    
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="text" name="subject" placeholder="Subject" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <textarea name="message" placeholder="Your Message" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="button">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <button class="scroll-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Plexus Network Effect
+            const canvas = document.getElementById('plexus-canvas');
+            const ctx = canvas.getContext('2d');
+            let particlesArray;
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let mouse = {
+                x: null,
+                y: null,
+                radius: (canvas.height / 110) * (canvas.width / 110)
+            };
+
+            window.addEventListener('mousemove', function(event) {
+                mouse.x = event.x;
+                mouse.y = event.y;
+            });
+
+            class Particle {
+                constructor(x, y, directionX, directionY, size, color) {
+                    this.x = x;
+                    this.y = y;
+                    this.directionX = directionX;
+                    this.directionY = directionY;
+                    this.size = size;
+                    this.color = color;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                    ctx.fillStyle = 'rgba(0, 230, 118, 0.2)';
+                    ctx.fill();
+                }
+                update() {
+                    if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+                    if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+                    
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius + this.size) {
+                        if (mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 2;
+                        if (mouse.x > this.x && this.x > this.size * 10) this.x -= 2;
+                        if (mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 2;
+                        if (mouse.y > this.y && this.y > this.size * 10) this.y -= 2;
+                    }
+                    this.x += this.directionX;
+                    this.y += this.directionY;
+                    this.draw();
+                }
+            }
+
+            function init() {
+                particlesArray = [];
+                let numberOfParticles = (canvas.height * canvas.width) / 9000;
+                for (let i = 0; i < numberOfParticles * 0.7; i++) { // Reduced particle count slightly
+                    let size = (Math.random() * 2) + 1;
+                    let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                    let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                    let directionX = (Math.random() * 0.4) - 0.2;
+                    let directionY = (Math.random() * 0.4) - 0.2;
+                    let color = 'rgba(0, 230, 118, 0.2)';
+                    particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+                }
+            }
+
+            function connect() {
+                let opacityValue = 1;
+                for (let a = 0; a < particlesArray.length; a++) {
+                    for (let b = a; b < particlesArray.length; b++) {
+                        let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
+                                     + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                        if (distance < (canvas.width/8) * (canvas.height/8)) {
+                            opacityValue = 1 - (distance/20000);
+                            ctx.strokeStyle = 'rgba(0, 230, 118,' + opacityValue * 0.1 + ')'; // Made lines more subtle
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+            
+            function animate() {
+                requestAnimationFrame(animate);
+                ctx.clearRect(0,0,innerWidth, innerHeight);
+                for(let i = 0; i < particlesArray.length; i++){
+                    particlesArray[i].update();
+                }
+                connect();
+            }
+
+            window.addEventListener('resize', function(){
+                canvas.width = innerWidth;
+                canvas.height = innerHeight;
+                mouse.radius = ((canvas.height/110) * (canvas.width/110));
+                init();
+            });
+
+            window.addEventListener('mouseout', function(){
+                mouse.x = undefined;
+                mouse.y = undefined;
+            });
+            
+            init();
+            animate();
+
+            // Typing effect
+            const typingElement = document.getElementById('typing-text');
+            if(typingElement) {
+                const texts = ['Building amazing apps...', 'Coding with passion...', 'Creating user experiences...', 'Solving problems...', 'Always learning...'];
+                let textIndex = 0, charIndex = 0, isDeleting = false;
+
+                function typeWriter() {
+                    const currentText = texts[textIndex];
+                    let speed = isDeleting ? 50 : 100;
+
+                    if (isDeleting) {
+                        typingElement.textContent = currentText.substring(0, charIndex - 1);
+                        charIndex--;
+                        if (charIndex === 0) {
+                            isDeleting = false;
+                            textIndex = (textIndex + 1) % texts.length;
+                            speed = 500;
+                        }
+                    } else {
+                        typingElement.textContent = currentText.substring(0, charIndex + 1);
+                        charIndex++;
+                        if (charIndex === currentText.length) {
+                            isDeleting = true;
+                            speed = 2000;
+                        }
+                    }
+                    setTimeout(typeWriter, speed);
+                }
+                typeWriter();
+            }
+
+            // Active link scrolling
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.sidebar nav a');
+            const scrollTopBtn = document.querySelector('.scroll-top');
+
+            function updateActiveLink() {
+                let current = 'about'; // Default to about
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 150) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+
+                if(scrollTopBtn) {
+                    if (window.scrollY > 300) {
+                        scrollTopBtn.classList.add('visible');
+                    } else {
+                        scrollTopBtn.classList.remove('visible');
+                    }
+                }
+            }
+            
+            // Fade-in animations on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            window.addEventListener('scroll', updateActiveLink);
+
+            // Scroll to top
+            if(scrollTopBtn) {
+                scrollTopBtn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
